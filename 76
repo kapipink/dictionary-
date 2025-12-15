@@ -1,0 +1,15 @@
+import matplotlib.pyplot as plt
+with open('opendata.stat.txt', encoding='utf-8') as f:
+    data = [(p[2][5:], float(p[3])) for line in f 
+            if 'Средняя пенсия,Забайкальский край,2018' in line 
+            and len((p:=line.strip().split(',')))>=4]
+data.sort()
+months, values = zip(*data)
+average = sum(values)/len(values)
+plt.plot(months, values, 'o-')
+plt.axhline(average, color='r', ls='--', label=f'Среднее: {average:.2f} руб.')
+plt.title('Изменение средней пенсии в Забайкальском крае (2018)')
+plt.xlabel('Месяц'); plt.ylabel('Рубли'); plt.grid(); plt.legend(); plt.tight_layout()
+plt.savefig('график_пенсии.png'); plt.show()
+input("Нажмите Enter для выхода...")
+print(f"Средняя пенсия за 2018 год: {average:.2f} руб.")
